@@ -1,0 +1,210 @@
+'use strict';
+
+// helper func for array equality 
+const areArraysEqual = (array1, array2) => {
+  var areEqual = true;
+  for (var i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) {
+      areEqual = false;
+    }
+  }
+  return areEqual && array1.length === array2.length;
+};
+
+// helper func for object equality (test not compatible in all browsers)
+const areObjectsEqual = (obj1, obj2) => {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+};
+
+// time: O(n) | space: O(1)
+const stockPricesYesterday = (arg) => {
+  let smallest = Infinity;
+  let largest = 0;
+  let buy = false;
+  let length = arg.length;
+  arg.forEach((stock, index) => {
+    if (stock < smallest && index !== length - 1) {
+      smallest = stock;
+      buy = true;
+    } else if (stock > largest && buy) {
+      largest = stock;
+    }
+  });
+  return largest - smallest;
+};
+// time: O(n) | space: O(1)
+const stockPricesYesterday2 = (arg) => {
+  let minPrice = arg[0];
+  let maxProfit = arg[1] - arg[0];
+  for (let i = 1; i < arg.length; i++) {
+    let currentPrice = arg[i];
+    let potentialProfit = currentPrice - minPrice;
+    maxProfit = Math.max(maxProfit, potentialProfit);
+    minPrice = Math.min(minPrice, currentPrice);
+  }
+  return maxProfit;
+};
+
+console.assert(stockPricesYesterday([10, 7, 5, 8, 11, 9]) === 6, 'should equal 6');
+console.assert(stockPricesYesterday([10, 9, 8, 7, 6, 5]) === -1, 'should equal -1');
+console.assert(stockPricesYesterday2([10, 7, 5, 8, 11, 9]) === 6, 'should equal 6');
+console.assert(stockPricesYesterday2([10, 9, 8, 7, 6, 5]) === -1, 'should equal -1');
+
+// time: O(n^2) | space: O(n)
+const getProductsOfAllIntsExceptAtIndex = (array) => {
+  const result = [];
+  array.forEach(num => {
+    let product = 1;
+    for (let i = 0; i < array.length; i++) {
+      let current = array[i];
+      if (current !== num) {
+        product *= current;
+      }
+    }
+    result.push(product);
+    product = 1;
+  });
+  return result;
+};
+// time: O(n) | space: O(n)
+const getProductsOfAllIntsExceptAtIndex2 = (array) => {
+  if (array.length === 0) {
+    return [];
+  }
+  const result = [];
+  let productSoFar = 1;
+  for (let i = 0; i < array.length; i++) {
+    result[i] = productSoFar;
+    productSoFar *= array[i];
+  }
+  productSoFar = 1;
+  for (let i = array.length - 1; i >= 0; i--) {
+    result[i] = productSoFar * result[i];
+    productSoFar *= array[i];
+  }
+  return result;
+};
+
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex([1, 7, 3, 4]), [84, 12, 28, 21]) === true, 'should equal true');
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex([1, 0, 3, 4]), [0, 12, 0, 0]) === true, 'should equal true');
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex2([1, 7, 3, 4]), [84, 12, 28, 21]) === true, 'should equal true');
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex2([1, 0, 3, 4]), [0, 12, 0, 0]) === true, 'should equal true');
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex2([2, 4, 10]), [40, 20, 8]) === true, 'should equal true');
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex2([1]), [1]) === true, 'should equal true');
+console.assert(areArraysEqual(getProductsOfAllIntsExceptAtIndex2([]), []) === true, 'should equal true');
+
+const highestProductOfThree = (array) => {
+
+};
+// console.assert(highestProductOfThree([1, 2, 3, 4]) === 24, 'should equal 24');
+// console.assert(highestProductOfThree([1, 2, 3]) === 6, 'should equal 6');
+// console.assert(highestProductOfThree([20, 1, 5, 16, 17, 8, 11, 9]) === 5440, 'should equal 5440');
+// console.assert(highestProductOfThree([10, 1, 5, 20, 30, 8, 11, 80]) === 48000, 'should equal 5440');
+
+const condenseMeetingTimes = (array) => {
+  // sort array | O(n log n)
+  array.sort((a, b) => { return a.startTime > b.startTime ? 1 : 0; });
+  // create result object
+  const result = [];
+  // for each object in array | O(n)
+  array.forEach((meeting) => {
+    // check to see if start time is inbetween any elements start and end
+    let flag = false;
+    for (let i = 0; i < result.length; i++) {
+      let sched = result[i];
+      // if it is update end
+      if (meeting.startTime >= sched.startTime && meeting.startTime <= sched.endTime) {
+        // case for when second meeting starts later and ends sooner
+        sched.endTime = Math.max(meeting.endTime, sched.endTime);
+        flag = true;
+        return;
+      }
+    }
+    // else add to result object
+    if (!flag) {
+      result.push(meeting);
+    }
+  });
+  return result;
+};
+
+const condenseMeetingTimes2 = (array) => {
+  array.sort((a, b) => { return a.startTime > b.startTime ? 1 : 0; });
+  const mergedMeetings = [array[0]];
+  for (let i = 1; i < array.length; i++) {
+    let currentMeeting = array[i];
+    let lastMeeting = mergedMeetings[mergedMeetings.length - 1];
+    if (currentMeeting.startTime <= lastMeeting.endTime) {
+      lastMeeting.endTime = Math.max(lastMeeting.endTime, currentMeeting.endTime);
+    } else {
+      mergedMeetings.push(currentMeeting);
+    }
+  }
+  return mergedMeetings;  
+};
+
+const meetings1 = [
+  {startTime: 0, endTime: 1}, 
+  {startTime: 3, endTime: 5}, 
+  {startTime: 4, endTime: 8}, 
+  {startTime: 10, endTime: 12}, 
+  {startTime: 9, endTime: 10}
+];
+const meetings2 = [
+  {startTime: 1, endTime: 10},
+  {startTime: 2, endTime: 6},
+  {startTime: 3, endTime: 5},
+  {startTime: 7, endTime: 9}
+];
+const meetings3 = [
+  {startTime: 1, endTime: 5}, 
+  {startTime: 2, endTime: 3}
+];
+const meetings4 = [
+  {startTime: 1, endTime: 2}, 
+  {startTime: 2, endTime: 3}
+];
+const solution1 = [ 
+  { startTime: 0, endTime: 1},
+  { startTime: 3, endTime: 8},
+  { startTime: 9, endTime: 12}
+];
+const solution2 = [ 
+  { startTime: 1, endTime: 10}
+];
+const solution3 = [ 
+  { startTime: 1, endTime: 5}
+];
+const solution4 = [ 
+  { startTime: 1, endTime: 3}
+];
+
+console.assert(areObjectsEqual(condenseMeetingTimes2(meetings1), solution1), 'should be true for meetings1');
+console.assert(areObjectsEqual(condenseMeetingTimes2(meetings2), solution2), 'should be true meetings2');
+console.assert(areObjectsEqual(condenseMeetingTimes2(meetings3), solution3), 'should be true meetings3');
+console.assert(areObjectsEqual(condenseMeetingTimes2(meetings4), solution4), 'should be true meetings4');
+
+const coins = (amountLeft, denominations, currentIndex) => {
+  currentIndex = currentIndex || 0;
+  if (amountLeft === 0) {
+    return 1;
+  }
+  if (amountLeft === 1) {
+    return 0;
+  }
+  if (currentIndex >= denominations.length) {
+    return 0;
+  }
+  console.log('checking ways to make ' + amountLeft + ' with ' + denominations.slice(currentIndex));
+  let possibilities = 0;
+  let currentCoin = denominations[currentIndex];
+  while (amountLeft >= 0) {
+    possibilities += coins(amountLeft, denominations, currentIndex + 1);
+    amountLeft -= currentCoin;
+  }
+  return possibilities;
+};
+
+const denominations = [1, 2, 3];
+console.log(coins(4, denominations));
+// console.assert(coins(4) === 4, 'should equal true');
