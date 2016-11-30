@@ -192,12 +192,11 @@ const coins = (amountLeft, denominations, currentIndex) => {
   if (amountLeft === 1) {
     return 0;
   }
-  if (currentIndex >= denominations.length) {
+  if (currentIndex === denominations.length) {
     return 0;
   }
-  console.log('checking ways to make ' + amountLeft + ' with ' + denominations.slice(currentIndex));
-  let possibilities = 0;
   let currentCoin = denominations[currentIndex];
+  let possibilities = 0;
   while (amountLeft >= 0) {
     possibilities += coins(amountLeft, denominations, currentIndex + 1);
     amountLeft -= currentCoin;
@@ -206,5 +205,72 @@ const coins = (amountLeft, denominations, currentIndex) => {
 };
 
 const denominations = [1, 2, 3];
-console.log(coins(4, denominations));
-// console.assert(coins(4) === 4, 'should equal true');
+console.assert(coins(4, denominations) === 4, 'should equal true');
+
+const intersectionRect = (rect1, rect2) => {
+  let highestStartpoint = Math.max(rect1.leftX, rect2.leftX);
+  let lowestEndpoint = Math.min(rect1.leftX + rect1.width, rect2.leftX + rect2.width);
+  if (highestStartpoint >= lowestEndpoint) {
+    return false;
+  }
+  let highestStartpointY = Math.max(rect1.bottomY, rect2.bottomY);
+  let lowestEndpointY = Math.min(rect1.bottomY + rect1.height, rect2.bottomY + rect2.height);
+  let width = lowestEndpoint - highestStartpoint;
+  let height = lowestEndpointY - highestStartpointY;
+  const intersection = {
+    leftX: highestStartpoint,
+    bottomY: highestStartpointY,
+    width: width,
+    height: height
+  };
+  return intersection;
+};
+
+const myRectangle = {
+  leftX: 1,
+  bottomY: 5,
+  width: 10,
+  height: 4,
+};
+const myRectangle2 = {
+  leftX: 5,
+  bottomY: 1,
+  width: 3,
+  height: 8,
+};
+const myRectangle3 = {
+  leftX: 9,
+  bottomY: 7,
+  width: 6,
+  height: 10,
+};
+const myRectangle4 = {
+  leftX: 15,
+  bottomY: 7,
+  width: 4,
+  height: 7,
+};
+console.assert(areObjectsEqual(intersectionRect(myRectangle, myRectangle2), { leftX: 5, bottomY: 5, width: 3, height: 4 }) === true, 'should be true');
+console.assert(areObjectsEqual(intersectionRect(myRectangle, myRectangle3), { leftX: 9, bottomY: 7, width: 2, height: 2 }) === true, 'should be true');
+console.assert(intersectionRect(myRectangle, myRectangle4) === false, 'should be false');
+
+class TempTracker {
+  constructor() {
+    
+  }
+  insert() {
+
+  }
+  getMax() {
+
+  }
+  getMin() {
+
+  }
+  getMean() {
+
+  }
+  getMode() {
+
+  }
+}
