@@ -257,30 +257,31 @@ console.assert(intersectionRect(myRectangle, myRectangle4) === false, 'should be
 class TempTracker {
   constructor() {
     this.temps = {};
+    for (let i = 0; i <= 110; i++) {
+      this.temps[i] = 0;
+    }
     this.sum = 0;
     this.count = 0;
     this.min = Infinity;
     this.max = 0;
     this.modeCount = 0;
     this.mode;
+    this.mean;
   }
   insert(temp) {
+    this.temps[temp]++;
     this.sum += temp;
     this.count++;
+    this.mean = this.sum / this.count;
     if (temp > this.max) {
       this.max = temp;
     }
     if (temp < this.min) {
       this.min = temp;
     }
-    if (!this.temps.hasOwnProperty(temp)) {
-      this.temps[temp] = 1;
-    } else {
-      this.temps[temp]++;
-      if (this.temps[temp] >= this.modeCount) {
-        this.modeCount = this.temps[temp];
-        this.mode = temp;
-      }
+    if (this.temps[temp] >= this.modeCount) {
+      this.modeCount = this.temps[temp];
+      this.mode = temp;
     }
   }
   getMax() {
@@ -290,7 +291,7 @@ class TempTracker {
     return this.min;
   }
   getMean() {
-    return this.sum / this.count;
+    return this.mean;
   }
   getMode() {
     return this.mode;
