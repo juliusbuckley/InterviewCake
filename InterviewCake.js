@@ -253,10 +253,11 @@ const myRectangle4 = {
 console.assert(areObjectsEqual(intersectionRect(myRectangle, myRectangle2), { leftX: 5, bottomY: 5, width: 3, height: 4 }) === true, 'should be true');
 console.assert(areObjectsEqual(intersectionRect(myRectangle, myRectangle3), { leftX: 9, bottomY: 7, width: 2, height: 2 }) === true, 'should be true');
 console.assert(intersectionRect(myRectangle, myRectangle4) === false, 'should be false');
-
+// time: O(1) | space: O(1)
+// take away: although we use an array, it's bounded by a value that does not depend on the size of the input
 class TempTracker {
   constructor() {
-    this.temps = {};
+    this.temps = [];
     for (let i = 0; i <= 110; i++) {
       this.temps[i] = 0;
     }
@@ -297,7 +298,6 @@ class TempTracker {
     return this.mode;
   }
 }
-
 const temp = new TempTracker();
 temp.insert(100);
 temp.insert(100);
@@ -311,4 +311,53 @@ temp.insert(6);
 temp.insert(1);
 temp.insert(90);
 temp.insert(78);
-console.log(temp.getMode());
+console.assert(temp.getMode() === 3, 'should equal 3');
+
+class BinaryTreeNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+  insertLeft(value) {
+    this.left = new BinaryTreeNode(value);
+    return this.left;
+  }
+  insertRight(value) {
+    this.right = new BinaryTreeNode(value);
+    return this.right;
+  }
+  superBalanced() {
+    let depths = [];
+    let nodes = [[this, 0]];
+    while (nodes.length) {
+      let nodePair = nodes.pop();
+      let node = nodePair[0];
+      let depth = nodePair[1];
+      if (!node.left && !node.right) {
+        if (!depths.includes(depth)) {
+          depths.push(depth);
+          if (depths.length > 2 || depths.length === 2 && Math.abs(depths[0] - depths[1]) > 1) {
+            return false;
+          }
+        }
+      } else {
+        if (node.left) {
+          nodes.push([node.left, depth + 1]);
+        } 
+        if (node.right) {
+          nodes.push([node.right, depth + 1]);
+        } 
+      }
+    }
+    return true;
+  }
+}
+
+const bt = new BinaryTreeNode(1);
+bt.insertLeft(2);
+bt.insertRight(3);
+bt.right.insertLeft(4);
+bt.right.insertRight(5);
+bt.right.right.insertLeft(6);
+console.assert(bt.superBalanced() === false, 'should be false');
