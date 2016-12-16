@@ -352,12 +352,42 @@ class BinaryTreeNode {
     }
     return true;
   }
+  isBST() {
+    let prev = -1;
+    const stack = [this];
+    let init = this.left;
+    while (init) {
+      stack.push(init);
+      init = init.left;
+    }
+    while (stack.length) {
+      let current = stack.pop();
+      if (prev > current.value) {
+        return false;
+      }
+      let temp = current.right;
+      while (temp) {
+        stack.push(temp);
+        temp = temp.left;
+      }
+      prev = current.value;
+    }
+    return true;
+  }
 }
+const binaryTree = new BinaryTreeNode(1);
+binaryTree.insertLeft(2);
+binaryTree.insertRight(3);
+binaryTree.right.insertLeft(4);
+binaryTree.right.insertRight(5);
+binaryTree.right.right.insertLeft(6);
+console.assert(binaryTree.superBalanced() === false, 'should be false');
 
-const bt = new BinaryTreeNode(1);
-bt.insertLeft(2);
-bt.insertRight(3);
-bt.right.insertLeft(4);
-bt.right.insertRight(5);
-bt.right.right.insertLeft(6);
-console.assert(bt.superBalanced() === false, 'should be false');
+const binaryTree2 = new BinaryTreeNode(7);
+binaryTree2.insertLeft(5);
+binaryTree2.insertRight(10);
+binaryTree2.left.insertLeft(2);
+binaryTree2.left.insertRight(6);
+binaryTree2.right.insertLeft(8);
+binaryTree2.right.insertRight(15);
+console.assert(binaryTree2.isBST() === true, 'should be false');
