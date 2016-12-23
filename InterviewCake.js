@@ -352,7 +352,7 @@ class BinaryTreeNode {
     }
     return true;
   }
-  isBST() {
+  isValid() {
     let prev = -1;
     const stack = [this];
     let init = this.left;
@@ -374,7 +374,54 @@ class BinaryTreeNode {
     }
     return true;
   }
+  inOrder(cb) {
+    let node = this;
+    if (node.left) {
+      node.left.inOrder(cb);
+    }
+    cb(node);
+    if (node.right) {
+      node.right.inOrder(cb);
+    }
+  }
+  preOrder(cb) {
+    let node = this;
+    cb(node);
+    if (node.left) {
+      node.left.preOrder(cb);
+    }
+    if (node.right) {
+      node.right.preOrder(cb);
+    }
+  }
+  postOrder(cb) {
+    let node = this;
+    if (node.left) {
+      cb(node.left);
+      node.left.postOrder(cb);
+    }
+    if (node.right) {
+      cb(node.right);
+      node.right.postOrder(cb);
+    }
+    // cb(node);
+  }
 }
+
+const bstCheckerRecursive = (treeRoot, lowerBound, upperBound) => {
+  lowerBound = lowerBound || Number.MIN_VALUE;
+  upperBound = upperBound || Number.MAX_VALUE;
+
+  if (!treeRoot) {
+    return true;
+  }
+  if (treeRoot.value > upperBound || treeRoot.value < lowerBound) {
+    return false;
+  }
+  return bstCheckerRecursive(treeRoot.left, lowerBound, treeRoot.value) && 
+  bstCheckerRecursive(treeRoot.right, treeRoot.value, upperBound);
+};
+
 const binaryTree = new BinaryTreeNode(1);
 binaryTree.insertLeft(2);
 binaryTree.insertRight(3);
@@ -390,4 +437,12 @@ binaryTree2.left.insertLeft(2);
 binaryTree2.left.insertRight(6);
 binaryTree2.right.insertLeft(8);
 binaryTree2.right.insertRight(15);
-console.assert(binaryTree2.isBST() === true, 'should be false');
+console.log(bstCheckerRecursive(binaryTree2));
+
+const binaryTree3 = new BinaryTreeNode(20);
+binaryTree3.insertLeft(10);
+binaryTree3.insertRight(30);
+binaryTree3.left.insertLeft(6);
+binaryTree3.left.insertRight(15);
+binaryTree3.right.insertRight(35);
+binaryTree3.right.insertLeft(25);
