@@ -411,7 +411,6 @@ class BinaryTreeNode {
 const bstCheckerRecursive = (treeRoot, lowerBound, upperBound) => {
   lowerBound = lowerBound || Number.MIN_VALUE;
   upperBound = upperBound || Number.MAX_VALUE;
-
   if (!treeRoot) {
     return true;
   }
@@ -437,7 +436,7 @@ binaryTree2.left.insertLeft(2);
 binaryTree2.left.insertRight(6);
 binaryTree2.right.insertLeft(8);
 binaryTree2.right.insertRight(15);
-console.log(bstCheckerRecursive(binaryTree2));
+console.assert(bstCheckerRecursive(binaryTree2) === true, 'shoud be true');
 
 const binaryTree3 = new BinaryTreeNode(20);
 binaryTree3.insertLeft(10);
@@ -446,3 +445,42 @@ binaryTree3.left.insertLeft(6);
 binaryTree3.left.insertRight(15);
 binaryTree3.right.insertRight(35);
 binaryTree3.right.insertLeft(25);
+
+const binaryTree4 = new BinaryTreeNode(5);
+binaryTree4.insertLeft(3);
+binaryTree4.insertRight(8);
+binaryTree4.left.insertLeft(1);
+binaryTree4.left.insertRight(4);
+binaryTree4.right.insertRight(12);
+binaryTree4.right.insertLeft(7);
+binaryTree4.right.right.insertLeft(10);
+binaryTree4.right.right.left.insertLeft(9);
+binaryTree4.right.right.left.insertRight(11);
+const findLargest = (bst) => {
+  if (!bst) {
+    throw new Error('Tree must have at least one node');
+  }
+  let node = bst;
+  while (node.right) {
+    node = node.right;
+  }
+  return node.value;
+};
+const findSecondLargest = (bst) => {
+  let node = bst;
+  if (!node || !node.left && !node.right) {
+    throw new Error('Tree must have at least two nodes');
+  }
+  while (node) {
+    if (node.left && !node.right) {
+      return findLargest(node.left);
+    }
+    if (node.right && !node.right.left && !node.right.right) {
+      return node.value;
+    }
+    node = node.right;
+  }
+};
+
+console.log(findSecondLargest(binaryTree4));
+console.log(findSecondLargest(binaryTree3));
