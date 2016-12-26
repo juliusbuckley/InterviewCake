@@ -527,8 +527,31 @@ class Trie {
 }
 const prefixTree = new Trie();
 console.assert(prefixTree.checkPresentAndAdd('julius') === true, 'should be true');
-console.assert(prefixTree.checkPresentAndAdd('julius') === false, 'should be true');
+console.assert(prefixTree.checkPresentAndAdd('julius') === false, 'should be false');
 console.assert(prefixTree.checkPresentAndAdd('captivating') === true, 'should be true');
 console.assert(prefixTree.isPrefix('capti', 'captivating') === true, 'should be true');
-console.assert(prefixTree.isPrefix('captive', 'captivating') === false, 'should be true');
-console.assert(prefixTree.isPrefix('juliusbuckley', 'julius') === false, 'should be true');
+console.assert(prefixTree.isPrefix('captive', 'captivating') === false, 'should be false');
+console.assert(prefixTree.isPrefix('juliusbuckley', 'julius') === false, 'should be false');
+
+const findTargetinAscendingArray = (target, array) => {
+  let count = 0;
+  let min = 0;
+  let max = array.length - 1;
+  while (min <= max) {
+    let mid = Math.floor((max + min) / 2);
+    let midValue = array[mid];
+    if (target === midValue) {
+      return mid;
+    }
+    if (target < midValue) {
+      max = mid - 1;
+    }
+    if (target > midValue) {
+      min = mid + 1;
+    }
+  }
+  return undefined;
+};
+const array = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12];
+console.assert(findTargetinAscendingArray(9, array) === undefined, 'should be undefined');
+console.assert(findTargetinAscendingArray(7, array) === 6, 'should be 6');
