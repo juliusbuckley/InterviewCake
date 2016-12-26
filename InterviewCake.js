@@ -506,7 +506,29 @@ class Trie {
     }
     return isNewWord;
   }
+  isPrefix(prefix, word) {
+    let currentNode = this.rootNode;
+    let count = 0;
+    for (let i = 0; i < word.length; i++) {
+      let char = word[i];
+      if (!currentNode.hasOwnProperty(char)) {
+        return false;
+      }
+      currentNode = currentNode[char];
+      if (char === prefix[count]) {
+        count++;
+      }
+      if (count === prefix.length) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
 const prefixTree = new Trie();
 console.assert(prefixTree.checkPresentAndAdd('julius') === true, 'should be true');
 console.assert(prefixTree.checkPresentAndAdd('julius') === false, 'should be true');
+console.assert(prefixTree.checkPresentAndAdd('captivating') === true, 'should be true');
+console.assert(prefixTree.isPrefix('capti', 'captivating') === true, 'should be true');
+console.assert(prefixTree.isPrefix('captive', 'captivating') === false, 'should be true');
+console.assert(prefixTree.isPrefix('juliusbuckley', 'julius') === false, 'should be true');
