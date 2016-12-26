@@ -456,21 +456,22 @@ binaryTree4.right.insertLeft(7);
 binaryTree4.right.right.insertLeft(10);
 binaryTree4.right.right.left.insertLeft(9);
 binaryTree4.right.right.left.insertRight(11);
-const findLargest = (bst) => {
-  if (!bst) {
+
+const findLargest = (treeNode) => {
+  if (!treeNode) {
     throw new Error('Tree must have at least one node');
   }
-  let node = bst;
+  let node = treeNode;
   while (node.right) {
     node = node.right;
   }
   return node.value;
 };
-const findSecondLargest = (bst) => {
-  let node = bst;
-  if (!node || !node.left && !node.right) {
+const findSecondLargest = (treeNode) => {
+  if (!treeNode || !treeNode.left && !treeNode.right) {
     throw new Error('Tree must have at least two nodes');
   }
+  let node = treeNode;
   while (node) {
     if (node.left && !node.right) {
       return findLargest(node.left);
@@ -481,6 +482,31 @@ const findSecondLargest = (bst) => {
     node = node.right;
   }
 };
+console.assert(findSecondLargest(binaryTree4) === 11, 'should be true');
+console.assert(findSecondLargest(binaryTree3) === 30, 'should be true');
 
-console.log(findSecondLargest(binaryTree4));
-console.log(findSecondLargest(binaryTree3));
+class Trie {
+  constructor() {
+    this.rootNode = {};
+  }
+  checkPresentAndAdd(word) {
+    let currentNode = this.rootNode;
+    let isNewWord = false;
+    for (let i = 0; i < word.length; i++) {
+      let char = word[i];
+      if (!currentNode.hasOwnProperty(char)) {
+        isNewWord = true;
+        currentNode[char] = {};
+      }
+      currentNode = currentNode[char];
+    }
+    if (!currentNode.hasOwnProperty('*')) {
+      isNewWord = true;
+      currentNode['*'] = {};
+    }
+    return isNewWord;
+  }
+}
+const prefixTree = new Trie();
+console.assert(prefixTree.checkPresentAndAdd('julius') === true, 'should be true');
+console.assert(prefixTree.checkPresentAndAdd('julius') === false, 'should be true');
