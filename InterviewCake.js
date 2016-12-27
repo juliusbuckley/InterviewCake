@@ -556,15 +556,22 @@ const array = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12];
 console.assert(findTargetinAscendingArray(9, array) === undefined, 'should be undefined');
 console.assert(findTargetinAscendingArray(7, array) === 6, 'should be 6');
 
-const rotationPoint = (array) => {
-  for (let i = 0; i < array.length - 1; i++) {
-    let prev = array[i][0];
-    let current = array[i + 1][0];
-    if (current < prev) {
-      return i + 1;
+const findRotationPoint = (array) => {
+  const firstWord = array[0];
+  let min = 0;
+  let max = array.length - 1;
+  while (min < max) {
+    let mid = Math.floor((max + min) / 2);
+    if (array[mid] > firstWord) {
+      min = mid;
+    } else {
+      max = mid;
+    }
+    if (min + 1 === max) {
+      break;
     }
   }
-  return undefined;
+  return max;
 };
 const words = [
   'ptolemaic',
@@ -579,4 +586,67 @@ const words = [
   'karpatka',
   'othellolagkage',
 ];
-console.assert(rotationPoint(words) === 5, 'should be 5');
+console.assert(findRotationPoint(words) === 5, 'should be 5');
+
+const selectMovies = (flightLength, movies) => {
+  const hash = {};
+  for (let i = 0; i < movies.length; i++) {
+    let firstMovie = movies[i];
+    let matchingMovie = flightLength - firstMovie;
+    if (hash.hasOwnProperty(matchingMovie)) {
+      return true;
+    }
+    if (!hash.hasOwnProperty(firstMovie)) {
+      hash[firstMovie] = firstMovie;
+    }
+  }
+  return false;
+};
+const movies = [130, 50, 90, 95, 70, 61, 120, 76, 35, 79, 23, 107];
+console.assert(selectMovies(157, movies) === true, 'should be true');
+
+class Fib {
+  constructor() {
+    this.memo = {};
+  }
+  getFib(num) {
+    if (num < 0) {
+      throw new Error('Fib must be postive');
+    }
+    if (num === 0 || num === 1) {
+      return num;
+    }
+    if (this.memo.hasOwnProperty(num)) {
+      return this.memo[num];
+    }
+    let result = this.getFib(num - 1) + this.getFib(num - 2);
+    this.memo[num] = result;
+    return result;
+  }
+}
+const fib = (num) => {
+  if (num < 0) {
+    throw new Error('Fib must be positive');
+  } else if (num === 0 || num === 1) {
+    return num;
+  }
+  let prev = 1;
+  let prevPrev = 0;
+  let current;
+  for (let i = 1; i < num; i++) {
+    current = prev + prevPrev;
+    prevPrev = prev;
+    prev = current;
+  }
+  return current;
+};
+const fibMemo = new Fib();
+let nums = [0, 1, 2, 3, 4];
+console.assert(fibMemo.getFib(8) === 21, 'should be 21');
+console.assert(fibMemo.getFib(6) === 8, 'should be 8');
+console.assert(fibMemo.getFib(5) === 5, 'should be 5');
+console.assert(fibMemo.getFib(3) === 2, 'should be 2');
+console.assert(fib(8) === 21, 'should be 21');
+console.assert(fib(6) === 8, 'should be 8');
+console.assert(fib(5) === 5, 'should be 5');
+console.assert(fib(3) === 2, 'should be 2');
