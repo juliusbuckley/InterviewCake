@@ -555,3 +555,28 @@ const findTargetinAscendingArray = (target, array) => {
 const array = [1, 2, 3, 4, 5, 6, 7, 8, 10, 12];
 console.assert(findTargetinAscendingArray(9, array) === undefined, 'should be undefined');
 console.assert(findTargetinAscendingArray(7, array) === 6, 'should be 6');
+
+const rotationPoint = (array) => {
+  for (let i = 0; i < array.length - 1; i++) {
+    let prev = array[i][0];
+    let current = array[i + 1][0];
+    if (current < prev) {
+      return i + 1;
+    }
+  }
+  return undefined;
+};
+const words = [
+  'ptolemaic',
+  'retrograde',
+  'supplant',
+  'undulate',
+  'xenoepist',
+  'asymptote',
+  'babka',
+  'banoffee',
+  'engender',
+  'karpatka',
+  'othellolagkage',
+];
+console.assert(rotationPoint(words) === 5, 'should be 5');
