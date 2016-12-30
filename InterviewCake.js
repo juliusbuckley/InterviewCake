@@ -446,6 +446,11 @@ binaryTree3.left.insertRight(15);
 binaryTree3.right.insertRight(35);
 binaryTree3.right.insertLeft(25);
 
+const binaryTree5 = new BinaryTreeNode(2);
+binaryTree5.insertLeft(1);
+binaryTree5.insertRight(3);
+console.assert(bstCheckerRecursive(binaryTree5) === true, 'shoud be true');
+
 const binaryTree4 = new BinaryTreeNode(5);
 binaryTree4.insertLeft(3);
 binaryTree4.insertRight(8);
@@ -650,3 +655,81 @@ console.assert(fib(8) === 21, 'should be 21');
 console.assert(fib(6) === 8, 'should be 8');
 console.assert(fib(5) === 5, 'should be 5');
 console.assert(fib(3) === 2, 'should be 2');
+
+const maxDuffleBagValue = (cakes, weight, totalCount, totalWeight) => {
+  totalCount = totalCount || 0;
+  totalWeight = totalWeight || 0;
+  console.log('totalCount', totalCount);
+  console.log('totalWeight', totalWeight);
+  if (totalCount === weight) {
+    return totalCount;
+  }
+  for (let i = 0; i < cakes.length; i++) {
+    if (totalWeight + cakes[i].weight < weight) {
+      totalWeight += cakes[i].weight;
+      totalCount += cakes[i].value;
+      maxDuffleBagValue(cakes, weight, totalCount, totalWeight);
+    }
+  }
+};
+const cakeTypes = [
+  {weight: 7, value: 160},
+  {weight: 3, value: 90},
+  {weight: 2, value: 15},
+];
+// console.log(maxDuffleBagValue(cakeTypes, 20)); //555
+
+class Stack {
+  constructor() {
+    this._storage = {};
+    this._size = 0;
+  }
+  push(val) {
+    this._storage[this._size++] = val;
+  }
+  pop() {
+    this.size() && this._size--;
+    let temp = this._storage[this._size];
+    delete this._storage[this._size];
+    return temp;
+  }
+  size() {
+    return this._size;
+  }
+}
+class Queue {
+  constructor() {
+    this.inbox = new Stack();
+    this.outbox = new Stack();
+  }
+  enqueue(val) {
+    this.inbox.push(val);
+  }
+  dequeue() {
+    if (!this.outbox._size) {
+      while (this.inbox._size) {
+        let temp = this.inbox.pop();
+        this.outbox.push(temp);
+      }
+      return this.outbox.pop();
+    } else {
+      return this.outbox.pop();
+    }
+  }
+}
+const queue = new Queue();
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+queue.enqueue(4);
+queue.enqueue(5);
+console.assert(queue.dequeue() === 1, 'should return 1');
+queue.enqueue(6);
+queue.enqueue(7);
+queue.enqueue(8);
+queue.enqueue(9);
+console.assert(queue.dequeue() === 2, 'should return 2');
+console.assert(queue.dequeue() === 3, 'should return 3');
+console.assert(queue.dequeue() === 4, 'should return 4');
+console.assert(queue.dequeue() === 5, 'should return 5');
+console.assert(queue.dequeue() === 6, 'should return 5');
