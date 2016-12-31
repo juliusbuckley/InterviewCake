@@ -693,6 +693,10 @@ class Stack {
     delete this._storage[this._size];
     return temp;
   }
+  peek() {
+    let size = this._size - 1;
+    return this._storage[size];
+  }
   size() {
     return this._size;
   }
@@ -706,15 +710,13 @@ class Queue {
     this.inbox.push(val);
   }
   dequeue() {
-    if (!this.outbox._size) {
+    if (this.outbox._size === 0) {
       while (this.inbox._size) {
         let temp = this.inbox.pop();
         this.outbox.push(temp);
       }
-      return this.outbox.pop();
-    } else {
-      return this.outbox.pop();
-    }
+    } 
+    return this.outbox.pop();
   }
 }
 const queue = new Queue();
