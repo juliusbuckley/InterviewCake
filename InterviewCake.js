@@ -735,3 +735,11 @@ console.assert(queue.dequeue() === 3, 'should return 3');
 console.assert(queue.dequeue() === 4, 'should return 4');
 console.assert(queue.dequeue() === 5, 'should return 5');
 console.assert(queue.dequeue() === 6, 'should return 5');
+
+const uniqueInteger = array => {
+  let uniqueId = 0;
+  array.forEach(id => uniqueId ^= id);
+  return uniqueId;
+};
+let ids = [120, 105, 987, 555, 281, 505, 105, 987, 879, 505, 555, 281, 120];
+console.assert(uniqueInteger(ids) === 879, 'should be 879');
