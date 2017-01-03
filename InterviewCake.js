@@ -805,9 +805,12 @@ const a = new LinkedListNode('A');
 const b = new LinkedListNode('B');
 const c = new LinkedListNode('C');
 const d = new LinkedListNode('D');
+const e = new LinkedListNode('E');
+const f = new LinkedListNode('F');
 a.next = b;
 b.next = c;
 c.next = d;
+
 const deleteNode = deleteNode => {
   let nextNode = deleteNode.next;
   if (nextNode) {
@@ -817,3 +820,22 @@ const deleteNode = deleteNode => {
     throw new Error('Cannot delete last node');
   }
 };
+
+a.next = b;
+b.next = c;
+c.next = b;
+d.next = e;
+e.next = f;
+const containsCycle = head => {
+  let slow = head;
+  let fast = head;
+  while (fast && fast.next) {
+    if (fast.value === slow.value) {
+      return true;
+    }
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  return false;
+};
+console.log(containsCycle(a));
