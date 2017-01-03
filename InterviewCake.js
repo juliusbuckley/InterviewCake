@@ -743,3 +743,77 @@ const uniqueInteger = array => {
 };
 let ids = [120, 105, 987, 555, 281, 505, 105, 987, 879, 505, 555, 281, 120];
 console.assert(uniqueInteger(ids) === 879, 'should be 879');
+
+class LinkedList {
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
+  addToTail(value) {
+    let node = this.createNode(value);
+    if (!this.head) {
+      this.head = this.tail = node;
+    }
+    this.tail.next = node;
+    this.tail = node;
+  }
+  createNode(value) {
+    return { value: value, next: null };
+  }
+  forEach(cb) {
+    let currentNode = this.head;
+    while (currentNode) {
+      cb(currentNode.value);
+      currentNode = currentNode.next;
+    }
+  }
+  removeNode(target) {
+    let current = this.head;
+    let runner = this.head.next;
+    if (current.value === target) {
+      let temp = current.value;
+      this.head = this.head.next;
+      return temp;
+    }
+    while (runner) {
+      if (runner.value === target) {
+        let temp = runner.value;
+        current.next = runner.next;
+        return temp;
+      }
+      current = current.next;
+      runner = runner.next;
+    }
+    return -1;
+  }
+}
+const linkedList = new LinkedList();
+linkedList.addToTail('A');
+linkedList.addToTail('B');
+linkedList.addToTail('C');
+linkedList.addToTail('D');
+console.assert(linkedList.removeNode('A') === 'A', 'should return A');
+// linkedList.forEach(node => console.log(node));
+
+class LinkedListNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+const a = new LinkedListNode('A');
+const b = new LinkedListNode('B');
+const c = new LinkedListNode('C');
+const d = new LinkedListNode('D');
+a.next = b;
+b.next = c;
+c.next = d;
+const deleteNode = deleteNode => {
+  let nextNode = deleteNode.next;
+  if (nextNode) {
+    deleteNode.value = nextNode.value;
+    deleteNode.next = nextNode.next;
+  } else { 
+    throw new Error('Cannot delete last node');
+  }
+};
