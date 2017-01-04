@@ -892,3 +892,15 @@ const kthToTheLast = (k, head) => {
 };
 console.assert(kthToTheLast(2, a1) === 'Devil\'s Food', 'should return Devil\'s Food');
 console.assert(kthToTheLast(5, a1) === undefined, 'should return Devil\'s Food');
+
+const reverseStringInPlace = string => {
+  let str = string.split('');
+  for (let i = 0; i < Math.floor(str.length / 2); i++) {
+    let temp = str[i];
+    str[i] = str[str.length - 1 - i];
+    str[str.length - 1 - i] = temp;
+  }
+  return str.join('');
+};
+console.assert(reverseStringInPlace('cat') === 'tac', 'should return tac');
+console.assert(reverseStringInPlace('julius') === 'suiluj', 'should return tac');
