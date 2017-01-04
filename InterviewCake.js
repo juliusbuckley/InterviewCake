@@ -914,6 +914,40 @@ const reverseWordsInPlace = string => {
   }
   return str.join(' ');
 };
-const message = 'find you will pain only go you recordings security the into if';
-const output = 'if into the security recordings you go only pain will you find';
-console.assert(reverseWordsInPlace(message) === output, 'should return output');
+let message = 'find you will pain only go you recordings security the into if';
+let outputMessage = 'if into the security recordings you go only pain will you find';
+console.assert(reverseWordsInPlace(message) === outputMessage, 'should return output');
+
+const closingParenStack = (index, string) => {
+  const stack = [];
+  for (let i = 0; i < string.length; i++) {
+    let char = string[i];
+    if (char === '(') {
+      stack.push([char, i]);
+    } else if (char === ')') {
+      let removed = stack.pop();
+      if (removed[1] === index) {
+        return i;
+      }
+    }
+  }
+  return undefined;
+};
+const closingParen = (index, string) => {
+  let openParen = 0;
+  for (let i = index + 1; i < string.length; i++) {
+    let char = string[i];
+    if (char === '(') {
+      openParen += 1;
+    } else if (char === ')') {
+      if (openParen === 0) {
+        return i;
+      } else {
+        openParen -= 1;
+      }
+    }
+  }
+  return undefined;
+};
+let inputString = 'Sometimes (when I nest them (my parentheticals) too much (like this (and this))) they get confusing.';
+console.assert(closingParen(10, inputString) === 79, 'should return 79');
