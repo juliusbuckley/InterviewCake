@@ -839,3 +839,21 @@ const containsCycle = head => {
   return false;
 };
 console.log(containsCycle(a));
+
+a.next = b;
+b.next = c;
+c.next = d;
+d.next = e;
+e.next = f;
+const reverse = head => {
+  let current = head;
+  let prev = null;
+  let nextNode = null;
+  while (current) {
+    nextNode = current.next;
+    current.next = prev;
+    prev = current;
+    current = nextNode;
+  }
+  return prev;
+};
