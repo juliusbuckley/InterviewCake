@@ -838,7 +838,7 @@ const containsCycle = head => {
   }
   return false;
 };
-console.log(containsCycle(a));
+console.assert(containsCycle(a) === true, 'should return true');
 
 a.next = b;
 b.next = c;
@@ -857,3 +857,38 @@ const reverse = head => {
   }
   return prev;
 };
+
+let a1 = new LinkedListNode('Angel Food');
+let b1 = new LinkedListNode('Bundt');
+let c1 = new LinkedListNode('Cheese');
+let d1 = new LinkedListNode('Devil\'s Food');
+let e1 = new LinkedListNode('Eccles');
+a1.next = b1;
+b1.next = c1;
+c1.next = d1;
+d1.next = e1;
+const kthToTheLast = (k, head) => {
+  if (k < 1) {
+    throw new Error('Cannot find k of less than first to last node');
+  }
+  let slow = head;
+  let fast = head;
+  let count = 0;
+  let flag = false;
+  let kth = undefined;
+  while (fast) {
+    if (count === k) {
+      slow = slow.next;
+      flag = true;
+    }
+    fast = fast.next;
+    if (flag) {
+      kth = slow;
+      slow = slow.next;
+    }
+    count++;
+  }
+  return kth === undefined ? kth : kth.value;
+};
+console.assert(kthToTheLast(2, a1) === 'Devil\'s Food', 'should return Devil\'s Food');
+console.assert(kthToTheLast(5, a1) === undefined, 'should return Devil\'s Food');
