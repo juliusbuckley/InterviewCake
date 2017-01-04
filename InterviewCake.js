@@ -951,3 +951,30 @@ const closingParen = (index, string) => {
 };
 let inputString = 'Sometimes (when I nest them (my parentheticals) too much (like this (and this))) they get confusing.';
 console.assert(closingParen(10, inputString) === 79, 'should return 79');
+
+const validBrackets = string => {
+  let stack = [];
+  let map = {
+    '}': '{',
+    ']': '[',
+    ')': '('
+  };
+  for (let i = 0; i < string.length; i++) {
+    let char = string[i];
+    if (char === '(' || char === '{' || char === '[') {
+      stack.push(char);
+    } else if (char === ')' || char === '}' || char === ']') {
+      let match = stack.pop();
+      if (map[char] !== match) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+let test1 = '{ [ ] ( ) }'; 
+let test2 = '{ [ ( ] ) }'; 
+let test3 = '{ [ }'; 
+console.assert(validBrackets(test1) === true, 'should return true');
+console.assert(validBrackets(test2) === false, 'should return false');
+console.assert(validBrackets(test3) === false, 'should return false');
