@@ -903,4 +903,17 @@ const reverseStringInPlace = string => {
   return str.join('');
 };
 console.assert(reverseStringInPlace('cat') === 'tac', 'should return tac');
-console.assert(reverseStringInPlace('julius') === 'suiluj', 'should return tac');
+console.assert(reverseStringInPlace('julius') === 'suiluj', 'should return suiluj');
+
+const reverseWordsInPlace = string => {
+  let str = string.split(' ');
+  for (let i = 0; i < Math.floor(str.length / 2); i++) {
+    let temp = str[i];
+    str[i] = str[str.length - 1 - i];
+    str[str.length - 1 - i] = temp;
+  }
+  return str.join(' ');
+};
+const message = 'find you will pain only go you recordings security the into if';
+const output = 'if into the security recordings you go only pain will you find';
+console.assert(reverseWordsInPlace(message) === output, 'should return output');
