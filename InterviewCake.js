@@ -978,3 +978,50 @@ let test3 = '{ [ }';
 console.assert(validBrackets(test1) === true, 'should return true');
 console.assert(validBrackets(test2) === false, 'should return false');
 console.assert(validBrackets(test3) === false, 'should return false');
+
+const binaryTree6 = new BinaryTreeNode(1);
+binaryTree6.insertLeft(3);
+binaryTree6.insertRight(7);
+binaryTree6.left.insertLeft(8);
+binaryTree6.left.insertRight(9);
+binaryTree6.right.insertLeft(12);
+binaryTree6.right.insertRight(13);
+binaryTree6.left.right.insertLeft(10);
+binaryTree6.left.right.insertRight(11);
+binaryTree6.right.right.insertRight(14)
+binaryTree6.right.right.right.insertRight(15);
+binaryTree6.right.right.right.right.insertLeft(16);
+
+// countNodes
+const countNodes = node => {
+  return node === null ? 0 : countNodes(node.left) + countNodes(node.right) + 1;
+};
+// maxDepth
+const maxDepth = node => {
+  return node === null ? 0 : Math.max(maxDepth(node.left), maxDepth(node.right)) + 1;
+};
+// minDepth
+const minDepth = node => {
+  return node === null ? 0 : Math.min(minDepth(node.left), minDepth(node.right)) + 1;
+};
+// countLeaves
+const countLeaves = node => {
+  if (node === null) {
+    return 0;
+  }
+  if (node.left === null && node.right === null) {
+    return 1;
+  }
+  return countLeaves(node.left) + countLeaves(node.right);
+};
+// maxPath
+const maxPath = (node, max = node.value) => {
+  const left = node.left ? maxPath(node.left) : 0;
+  const right = node.right ? maxPath(node.right) : 0;
+  return Math.max(left + max, right + max);
+};
+console.assert(countNodes(binaryTree6) === 12, 'should return 12');
+console.assert(maxDepth(binaryTree6) === 6, 'should return 6');
+console.assert(minDepth(binaryTree6) === 3, 'should return 3');
+console.assert(countLeaves(binaryTree6) === 5, 'should return 5');
+console.assert(maxPath(binaryTree6) === 66, 'should return 66');
