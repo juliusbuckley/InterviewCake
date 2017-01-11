@@ -988,7 +988,7 @@ binaryTree6.right.insertLeft(12);
 binaryTree6.right.insertRight(13);
 binaryTree6.left.right.insertLeft(10);
 binaryTree6.left.right.insertRight(11);
-binaryTree6.right.right.insertRight(14)
+binaryTree6.right.right.insertRight(14);
 binaryTree6.right.right.right.insertRight(15);
 binaryTree6.right.right.right.right.insertLeft(16);
 
@@ -1025,3 +1025,25 @@ console.assert(maxDepth(binaryTree6) === 6, 'should return 6');
 console.assert(minDepth(binaryTree6) === 3, 'should return 3');
 console.assert(countLeaves(binaryTree6) === 5, 'should return 5');
 console.assert(maxPath(binaryTree6) === 66, 'should return 66');
+
+const generatePermutations = string => {
+  const results = [];
+  const permute = (string, current, end) => {
+    if (typeof string === 'string') {
+      string = string.split('');
+    }
+    end = end || string.length - 1;
+    current = current || 0;
+    if (current === end) {
+      results.push(string.join(''));
+    } else {
+      for (let i = current; i <= end; i++) {
+        [string[i], string[current]] = [string[current], string[i]];
+        permute(string, current + 1, end);
+        [string[i], string[current]] = [string[current], string[i]];
+      }
+    }
+  };
+  permute(string);
+  return results;
+};
