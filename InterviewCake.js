@@ -1070,3 +1070,14 @@ const sortScores = (unsortedScores, HIGHEST_POSSIBLE_SCORE) => {
 const unsortedScores = [37, 89, 41, 65, 91, 53, 53];
 const HIGHEST_POSSIBLE_SCORE = 100;
 console.assert(sortScores(unsortedScores, HIGHEST_POSSIBLE_SCORE).join(',') === '37,41,53,53,65,89,91', 'should return true');
+
+const appearsTwice = array => {
+  const n = array[array.length - 1];
+  const triSeries = (Math.pow(n, 2) + n) / 2;
+  const total = array.reduce((acc, num) => {
+    return acc += num;
+  }, 0);
+  return total - triSeries;
+};
+const arrayOfNums = [1, 2, 3, 3, 4, 5, 6];
+console.assert(appearsTwice(arrayOfNums) === 3, 'should return 2');
