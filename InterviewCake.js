@@ -1047,3 +1047,26 @@ const generatePermutations = string => {
   permute(string);
   return results;
 };
+
+const sortScores = (unsortedScores, HIGHEST_POSSIBLE_SCORE) => {
+  const scoreArray = [];
+  const result = [];
+  for (let i = 0; i <= HIGHEST_POSSIBLE_SCORE; i++) {
+    scoreArray[i] = 0;
+  }
+  unsortedScores.forEach(score => {
+    scoreArray[score] += 1;
+  });
+  scoreArray.forEach((currentScore, i) => {
+    if (currentScore > 0) {
+      let count = currentScore;
+      while (count-- > 0) {
+        result.push(i);
+      }
+    }
+  });
+  return result;
+};
+const unsortedScores = [37, 89, 41, 65, 91, 53, 53];
+const HIGHEST_POSSIBLE_SCORE = 100;
+console.assert(sortScores(unsortedScores, HIGHEST_POSSIBLE_SCORE).join(',') === '37,41,53,53,65,89,91', 'should return true');
