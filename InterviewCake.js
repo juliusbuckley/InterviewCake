@@ -1128,3 +1128,19 @@ const wordCloud = string => {
   return map;
 };
 const inputStrings = "We came, we saw, we conquered...then we ate Bill's (Mille-Feuille) cake. The bill came to five dollars.";
+
+const getRandom = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+const shuffleInPlace = array => {
+  const length = array.length;
+  for (let i = 0; i < length; i++) {
+    let randomIndex = getRandom(i, length - 1);
+    if (i !== randomIndex) {
+      [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+    }
+  }
+  return array;
+};
+const arrayOfInts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+console.log(shuffleInPlace(arrayOfInts));
