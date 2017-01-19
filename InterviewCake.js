@@ -1081,3 +1081,50 @@ const appearsTwice = array => {
 };
 const arrayOfNums = [1, 2, 3, 3, 4, 5, 6];
 console.assert(appearsTwice(arrayOfNums) === 3, 'should return 2');
+
+const stringPerm = string => {
+  const inputArray = string.split('');
+  const result = [];
+  const permute = (array, tmp = []) => {
+    if (array.length === 0) {
+      result.push(tmp);
+      return;
+    } else {
+      for (let i = 0; i < array.length; i++) {
+        let current = array.slice();
+        let next = current.splice(i, 1);
+        permute(current.slice(), tmp.concat(next));
+      }
+    }
+  };
+  permute(inputArray);
+  return result;
+};
+const split = string => {
+  let result = [];
+  let current = '';
+  let quote = false;
+  for (let i = 0; i < string.length; i++) {
+    let char = string[i];
+    if (!quote) {
+      if (/^[A-Za-z]+$/i.test(char) || char === '-') {
+        current += char;
+      } else if (char === '\'') {
+        quote = true;
+      } else if (current !== '') {
+        result.push(current.toLowerCase());
+        current = '';
+      }
+    } else if (char === ' ') {
+      quote = false;
+    }
+  }
+  return result;
+};
+const wordCloud = string => {
+  const map = new Map();
+  const stringArray = split(string);
+  stringArray.forEach(word => map.has(word) ? map.set(word, map.get(word) + 1) : map.set(word, 1));
+  return map;
+};
+const inputStrings = "We came, we saw, we conquered...then we ate Bill's (Mille-Feuille) cake. The bill came to five dollars.";
