@@ -1143,4 +1143,28 @@ const shuffleInPlace = array => {
   return array;
 };
 const arrayOfInts = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-console.log(shuffleInPlace(arrayOfInts));
+
+const mergeArrays = (array1, array2) => {
+  const result = [];
+  let spot1 = 0;
+  let spot2 = 0;
+  while (spot1 <= array1.length - 1 || spot2 <= array2.length - 1) {
+    let current1 = array1[spot1];
+    let current2 = array2[spot2];
+    if (current1 < current2 || current2 === undefined) {
+      result.push(current1);
+      spot1 += 1;
+    } else if (current2 < current1 || current1 === undefined) {
+      result.push(current2);
+      spot2 += 1;
+    } else if (current1 === current2) {
+      result.push(current1);
+      spot1 += 1;
+      spot2 += 1;
+    }
+  }
+  return result;
+};
+const myArray = [3, 4, 6, 10, 11, 15];
+const alicesArray = [1, 5, 8, 12, 14, 19];
+console.assert(mergeArrays(myArray, alicesArray).join(',') === '1,3,4,5,6,8,10,11,12,14,15,19', 'should return true');
