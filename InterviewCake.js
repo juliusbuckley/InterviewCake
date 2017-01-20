@@ -1168,3 +1168,95 @@ const mergeArrays = (array1, array2) => {
 const myArray = [3, 4, 6, 10, 11, 15];
 const alicesArray = [1, 5, 8, 12, 14, 19];
 console.assert(mergeArrays(myArray, alicesArray).join(',') === '1,3,4,5,6,8,10,11,12,14,15,19', 'should return true');
+
+class Contacts {
+  constructor() {
+    this.storage = {};
+  }
+  add(word) {
+    let current = this.storage;
+    for (let i = 0; i < word.length; i++) {
+      let char = word[i];
+      if (!current.hasOwnProperty(char)) {
+        current[char] = {};
+      }
+      current = current[char];
+    }
+    current['*'] = '*';
+  }
+  find(prefix) {
+    let current = this.storage;
+    for (let i = 0; i < prefix.length; i++) {
+      let char = prefix[i];
+      if (current.hasOwnProperty(char)) {
+        current = current[char];
+      } else {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+const trie = new Contacts();
+trie.add('cat');
+trie.add('catherine');
+trie.add('jasmine');
+console.assert(trie.find('cat') === true, 'should return true');
+console.assert(trie.find('cak') === false, 'should return false');
+console.assert(trie.find('cathe') === true, 'should return true');
+console.assert(trie.find('jas') === true, 'should return true');
+
+class NoPrefixSet {
+  constructor() {
+    this.storage = {};
+  }
+  add(array) {
+    for (let i = 0; i < array.length; i++) {
+      let current = this.storage;
+      let word = array[i];
+      let string = '';
+      for (let j = 0; j < word.length; j++) {
+        let char = word[j];
+        string += char;
+        if (!current.hasOwnProperty(char)) {
+          current[char] = {};
+        }
+        current = current[char];
+        if (this.checkForPrefix(string)) {
+          return false;
+        }
+      }
+      current['*'] = '*';
+    }
+    return true;
+  }
+  checkForPrefix(prefix) {
+    let current = this.storage;
+    for (let i = 0; i < prefix.length; i++) {
+      let char = prefix[i];
+      if (current.hasOwnProperty(char)) {
+        if (current[char].hasOwnProperty('*')) {
+          return true;
+        }
+        current = current[char];
+      } else {
+        return false;
+      }
+    }
+    return false;
+  }
+  reset() {
+    for (let keys in this.storage) {
+      delete this.storage[keys];
+    }
+  }
+}
+const pre1 = ['aab', 'defgab', 'abcde', 'aabcde', 'cedaaa', 'bbbbbbbbbb', 'jabjjjad'];
+const pre2 = ['aab', 'aac', 'aacghgh', 'aabghgh'];
+const pre3 = ['aab', 'abc', 'bbb'];
+const trie2 = new NoPrefixSet();
+console.assert(trie2.add(pre1) === false, 'should return false1');
+trie2.reset();
+console.assert(trie2.add(pre2) === false, 'should return false2');
+trie2.reset();
+console.assert(trie2.add(pre3) === true, 'should return true1');
