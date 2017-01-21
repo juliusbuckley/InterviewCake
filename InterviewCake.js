@@ -1260,3 +1260,54 @@ trie2.reset();
 console.assert(trie2.add(pre2) === false, 'should return false2');
 trie2.reset();
 console.assert(trie2.add(pre3) === true, 'should return true1');
+
+class BinarySearchTree {
+  constructor(value) {
+    this.left = null;
+    this.right = null;
+    this.value = value;
+  }
+  insert(value, current) {
+    current = current || this;
+    if (value < current.value) {
+      if (current.left === null) {
+        current.left = new BinarySearchTree(value);
+      } else {
+        current.insert(value, current.left);
+      }
+    } else if (value > current.value) {
+      if (current.right === null) {
+        current.right = new BinarySearchTree(value);
+      } else {
+        current.insert(value, current.right);
+      }
+    }
+  }
+  contains(target, current) {
+    current = current || this;
+    if (current.value === target) {
+      return true;
+    } else if (target < current.value) {
+      if (current.left === null) {
+        return false;
+      } else {
+        return current.contains(target, current.left);
+      }
+    } else if (target > current.value) {
+      if (current.right === null) {
+        return false;
+      } else {
+        return current.contains(target, current.right);
+      }
+    }
+  }
+}
+
+const bst = new BinarySearchTree(4);
+bst.insert(2);
+bst.insert(7);
+bst.insert(1);
+bst.insert(3);
+bst.insert(6);
+console.assert(bst.contains(9) === false, 'should return false');
+console.assert(bst.contains(3) === true, 'should return true');
