@@ -1285,23 +1285,88 @@ class BinarySearchTree {
   }
   contains(target, current) {
     current = current || this;
-    if (current.value === target) {
+    if (target === current.value) {
       return true;
     } else if (target < current.value) {
       if (current.left === null) {
         return false;
       } else {
-        return current.contains(target, current.left);
+        return this.contains(target, current.left);
       }
     } else if (target > current.value) {
       if (current.right === null) {
         return false;
       } else {
-        return current.contains(target, current.right);
+        return this.contains(target, current.right);
       }
     }
   }
+  lowestCommonAncestor(v1, v2) {
+    let depth = 0;
+    let ancestor;
+    const helper = (node, v1, v2, currentDepth = 0) => {
+      currentDepth += 1;
+      if (node.contains(v1) && node.contains(v2) && currentDepth > depth) {
+        ancestor = node.value;
+        depth = currentDepth;
+      }
+      if (node.left) {
+        helper(node.left, v1, v2, currentDepth);
+      }
+      if (node.right) {
+        helper(node.right, v1, v2, currentDepth);
+      }
+    };
+    helper(this, v1, v2);
+    return ancestor;
+  } 
+  greatestCommonAncestor(v1, v2) {
+    let depth = Number.MAX_VALUE;
+    let ancestor;
+    const helper = (node, v1, v2, currentDepth = 0) => {
+      currentDepth += 1;
+      if (node.contains(v1) && node.contains(v2) && currentDepth < depth) {
+        ancestor = node.value;
+        depth = currentDepth;
+      }
+      if (node.left) {
+        helper(node.left, v1, v2, currentDepth);
+      }
+      if (node.right) {
+        helper(node.right, v1, v2, currentDepth);
+      }
+    };
+    helper(this, v1, v2);
+    return ancestor;
+  }
 }
+
+const lowestCommonAncestor = (current, v1, v2) => {
+  if (current === undefined) {
+    return undefined;
+  }
+  if (current.value > v1 && current.value > v2) {
+    return lowestCommonAncestor(current.left, v1, v2);
+  }
+  if (current.value < v1 && current.value < v2) {
+    return lowestCommonAncestor(current.right, v1, v2);
+  }
+  return current.value;
+};
+
+const greatestCommonAncestor = (current, v1, v2, gca) => {
+  gca = gca || null;
+  if (current === undefined) {
+    return undefined;
+  }
+  if (current.value > v1 && current.value > v2) {
+    return greatestCommonAncestor(current.left, v1, v2, current.value);
+  }
+  if (current.value < v1 && current.value < v2) {
+    return greatestCommonAncestor(current.right, v1, v2, current.value);
+  }
+  return gca;
+};
 
 const bst = new BinarySearchTree(4);
 bst.insert(2);
@@ -1309,5 +1374,19 @@ bst.insert(7);
 bst.insert(1);
 bst.insert(3);
 bst.insert(6);
-console.assert(bst.contains(9) === false, 'should return false');
+bst.insert(9);
+console.assert(bst.contains(9) === true, 'should return true');
 console.assert(bst.contains(3) === true, 'should return true');
+console.assert(bst.contains(7) === true, 'should return true');
+console.assert(bst.contains(37) === false, 'should return false');
+console.assert(bst.lowestCommonAncestor(1, 7) === 4, 'should return 4');
+console.assert(bst.lowestCommonAncestor(1, 3) === 2, 'should return 2');
+console.assert(bst.greatestCommonAncestor(1, 3) === 4, 'should return 4');
+console.assert(bst.lowestCommonAncestor(6, 9) === 7, 'should return 7');
+console.assert(bst.greatestCommonAncestor(6, 9) === 4, 'should return 7');
+
+console.assert(lowestCommonAncestor(bst, 1, 7) === 4, 'should return 4');
+console.assert(lowestCommonAncestor(bst, 1, 3) === 2, 'should return 2');
+console.assert(lowestCommonAncestor(bst, 6, 9) === 7, 'should return 7');
+console.assert(greatestCommonAncestor(bst, 1, 3) === 4, 'should return 4');
+console.assert(greatestCommonAncestor(bst, 6, 9) === 4, 'should return 7');
