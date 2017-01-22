@@ -1355,7 +1355,6 @@ const lowestCommonAncestor = (current, v1, v2) => {
 };
 
 const greatestCommonAncestor = (current, v1, v2, gca) => {
-  gca = gca || null;
   if (current === undefined) {
     return undefined;
   }
@@ -1390,3 +1389,51 @@ console.assert(lowestCommonAncestor(bst, 1, 3) === 2, 'should return 2');
 console.assert(lowestCommonAncestor(bst, 6, 9) === 7, 'should return 7');
 console.assert(greatestCommonAncestor(bst, 1, 3) === 4, 'should return 4');
 console.assert(greatestCommonAncestor(bst, 6, 9) === 4, 'should return 7');
+
+const isPal = string => { 
+  if (string.length === 1) {
+    return true;
+  } 
+  return string[0] === string[string.length - 1] ? isPal(string.substring(1, string.length - 1)) : false;
+};
+const permutationPal = string => {
+  const inputArray = string.split('');
+  const permute = (array, tmp = []) => {
+    if (array.length === 0) {
+      let string = tmp.join('');
+      if (isPal(string)) {
+        return true;
+      }
+    }
+    for (let i = 0; i < array.length; i++) {
+      let current = array.slice();
+      let next = current.splice(i, 1);
+      if (permute(current.slice(), tmp.concat(next)) === true) {
+        return true;
+      }
+    }
+    return false;
+  };
+  return permute(inputArray) === true ? true : false;
+};
+console.assert(permutationPal('civic') === true, 'should return true');
+console.assert(permutationPal('ivicc') === true, 'should return true');
+console.assert(permutationPal('civil') === false, 'should return false');
+console.assert(permutationPal('livci') === false, 'should return false');
+
+const permutationPalOpt = string => {
+  const set = new Set();
+  for (let i = 0; i < string.length; i++) {
+    let char = string[i];
+    if (set.has(char)) {
+      set.delete(char);
+    } else {
+      set.add(char);
+    }
+  }
+  return set.size <= 1;
+};
+console.assert(permutationPalOpt('civic') === true, 'should return true');
+console.assert(permutationPalOpt('ivicc') === true, 'should return true');
+console.assert(permutationPalOpt('civil') === false, 'should return false');
+console.assert(permutationPalOpt('livci') === false, 'should return false');
