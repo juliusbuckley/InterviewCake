@@ -1354,15 +1354,15 @@ const lowestCommonAncestor = (current, v1, v2) => {
   return current.value;
 };
 
-const greatestCommonAncestor = (current, v1, v2, gca) => {
+const greatestCommonAncestor = (current, v1, v2, gca = current.value) => {
   if (current === undefined) {
     return undefined;
   }
   if (current.value > v1 && current.value > v2) {
-    return greatestCommonAncestor(current.left, v1, v2, current.value);
+    return greatestCommonAncestor(current.left, v1, v2, gca);
   }
   if (current.value < v1 && current.value < v2) {
-    return greatestCommonAncestor(current.right, v1, v2, current.value);
+    return greatestCommonAncestor(current.right, v1, v2, gca);
   }
   return gca;
 };
@@ -1374,6 +1374,8 @@ bst.insert(1);
 bst.insert(3);
 bst.insert(6);
 bst.insert(9);
+bst.insert(10);
+bst.insert(8);
 console.assert(bst.contains(9) === true, 'should return true');
 console.assert(bst.contains(3) === true, 'should return true');
 console.assert(bst.contains(7) === true, 'should return true');
@@ -1382,13 +1384,15 @@ console.assert(bst.lowestCommonAncestor(1, 7) === 4, 'should return 4');
 console.assert(bst.lowestCommonAncestor(1, 3) === 2, 'should return 2');
 console.assert(bst.greatestCommonAncestor(1, 3) === 4, 'should return 4');
 console.assert(bst.lowestCommonAncestor(6, 9) === 7, 'should return 7');
+console.assert(bst.lowestCommonAncestor(10, 8) === 9, 'should return 9');
 console.assert(bst.greatestCommonAncestor(6, 9) === 4, 'should return 7');
 
 console.assert(lowestCommonAncestor(bst, 1, 7) === 4, 'should return 4');
 console.assert(lowestCommonAncestor(bst, 1, 3) === 2, 'should return 2');
 console.assert(lowestCommonAncestor(bst, 6, 9) === 7, 'should return 7');
+console.assert(lowestCommonAncestor(bst, 10, 8) === 9, 'should return 9');
 console.assert(greatestCommonAncestor(bst, 1, 3) === 4, 'should return 4');
-console.assert(greatestCommonAncestor(bst, 6, 9) === 4, 'should return 7');
+console.assert(greatestCommonAncestor(bst, 6, 9) === 4, 'should return 4');
 
 const isPal = string => { 
   if (string.length === 1) {
@@ -1408,13 +1412,13 @@ const permutationPal = string => {
     for (let i = 0; i < array.length; i++) {
       let current = array.slice();
       let next = current.splice(i, 1);
-      if (permute(current.slice(), tmp.concat(next)) === true) {
+      if (permute(current.slice(), tmp.concat(next))) {
         return true;
       }
     }
     return false;
   };
-  return permute(inputArray) === true ? true : false;
+  return permute(inputArray);
 };
 console.assert(permutationPal('civic') === true, 'should return true');
 console.assert(permutationPal('ivicc') === true, 'should return true');
