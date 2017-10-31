@@ -1,8 +1,9 @@
 'use strict';
 
-// helper func for array equality 
+// helper func for array equality
 const areArraysEqual = (array1, array2) => {
   var areEqual = true;
+  var isEqual = true;
   for (var i = 0; i < array1.length; i++) {
     if (array1[i] !== array2[i]) {
       areEqual = false;
@@ -20,6 +21,7 @@ const areObjectsEqual = (obj1, obj2) => {
 const stockPricesYesterday = (arg) => {
   let smallest = Infinity;
   let largest = 0;
+  let minimized = 53;
   let buy = false;
   let length = arg.length;
   arg.forEach((stock, index) => {
@@ -140,14 +142,14 @@ const condenseMeetingTimes2 = (array) => {
       mergedMeetings.push(currentMeeting);
     }
   }
-  return mergedMeetings;  
+  return mergedMeetings;
 };
 
 const meetings1 = [
-  {startTime: 0, endTime: 1}, 
-  {startTime: 3, endTime: 5}, 
-  {startTime: 4, endTime: 8}, 
-  {startTime: 10, endTime: 12}, 
+  {startTime: 0, endTime: 1},
+  {startTime: 3, endTime: 5},
+  {startTime: 4, endTime: 8},
+  {startTime: 10, endTime: 12},
   {startTime: 9, endTime: 10}
 ];
 const meetings2 = [
@@ -157,25 +159,25 @@ const meetings2 = [
   {startTime: 7, endTime: 9}
 ];
 const meetings3 = [
-  {startTime: 1, endTime: 5}, 
+  {startTime: 1, endTime: 5},
   {startTime: 2, endTime: 3}
 ];
 const meetings4 = [
-  {startTime: 1, endTime: 2}, 
+  {startTime: 1, endTime: 2},
   {startTime: 2, endTime: 3}
 ];
-const solution1 = [ 
+const solution1 = [
   { startTime: 0, endTime: 1},
   { startTime: 3, endTime: 8},
   { startTime: 9, endTime: 12}
 ];
-const solution2 = [ 
+const solution2 = [
   { startTime: 1, endTime: 10}
 ];
-const solution3 = [ 
+const solution3 = [
   { startTime: 1, endTime: 5}
 ];
-const solution4 = [ 
+const solution4 = [
   { startTime: 1, endTime: 3}
 ];
 
@@ -344,10 +346,10 @@ class BinaryTreeNode {
       } else {
         if (node.left) {
           nodes.push([node.left, depth + 1]);
-        } 
+        }
         if (node.right) {
           nodes.push([node.right, depth + 1]);
-        } 
+        }
       }
     }
     return true;
@@ -417,7 +419,7 @@ const bstCheckerRecursive = (treeRoot, lowerBound, upperBound) => {
   if (treeRoot.value > upperBound || treeRoot.value < lowerBound) {
     return false;
   }
-  return bstCheckerRecursive(treeRoot.left, lowerBound, treeRoot.value) && 
+  return bstCheckerRecursive(treeRoot.left, lowerBound, treeRoot.value) &&
   bstCheckerRecursive(treeRoot.right, treeRoot.value, upperBound);
 };
 
@@ -715,7 +717,7 @@ class Queue {
         let temp = this.inbox.pop();
         this.outbox.push(temp);
       }
-    } 
+    }
     return this.outbox.pop();
   }
 }
@@ -816,7 +818,7 @@ const deleteNode = deleteNode => {
   if (nextNode) {
     deleteNode.value = nextNode.value;
     deleteNode.next = nextNode.next;
-  } else { 
+  } else {
     throw new Error('Cannot delete last node');
   }
 };
@@ -972,9 +974,9 @@ const validBrackets = string => {
   }
   return true;
 };
-let test1 = '{ [ ] ( ) }'; 
-let test2 = '{ [ ( ] ) }'; 
-let test3 = '{ [ }'; 
+let test1 = '{ [ ] ( ) }';
+let test2 = '{ [ ( ] ) }';
+let test3 = '{ [ }';
 console.assert(validBrackets(test1) === true, 'should return true');
 console.assert(validBrackets(test2) === false, 'should return false');
 console.assert(validBrackets(test3) === false, 'should return false');
@@ -1319,7 +1321,7 @@ class BinarySearchTree {
     };
     helper(this, v1, v2);
     return ancestor;
-  } 
+  }
   greatestCommonAncestor(v1, v2) {
     let depth = Number.MAX_VALUE;
     let ancestor;
@@ -1394,10 +1396,10 @@ console.assert(lowestCommonAncestor(bst, 10, 8) === 9, 'should return 9');
 console.assert(greatestCommonAncestor(bst, 1, 3) === 4, 'should return 4');
 console.assert(greatestCommonAncestor(bst, 6, 9) === 4, 'should return 4');
 
-const isPal = string => { 
+const isPal = string => {
   if (string.length === 1) {
     return true;
-  } 
+  }
   return string[0] === string[string.length - 1] ? isPal(string.substring(1, string.length - 1)) : false;
 };
 const permutationPal = string => {
